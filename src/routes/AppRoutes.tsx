@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom'
 import Dashboard from '../pages/Dashboard/Dashboard'
 import Register from '../pages/Register/Register'
 import Login from '../pages/Login/Login'
@@ -9,6 +9,7 @@ const AppRoutes = () => (
     <Routes>
       <Route path="/dashboard" element={<Dashboard />} /> 
       <Route path="/register" element={<Register />} />
+       <Route path="/" element={<Navigate to="/login" />} />
       <Route path="/login" element={<Login />} />
       <Route path="/forgot-password" element={<RecoverPassword />} />
     </Routes>
