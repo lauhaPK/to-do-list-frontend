@@ -23,6 +23,12 @@ Se eventualmente alguem quiser testar as credenciais para acesso são:  **email:
 - Filtros e categorias de tarefas
 - Responsividade para dispositivos móveis
 
+#Contato
+
+Se quiser enviar sugestões ou entrar em contato.
+lauhakamayura@gmail.com
+www.linkedin.com/in/lauhá-kamayurá
+
 
 
 
