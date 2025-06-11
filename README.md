@@ -7,7 +7,8 @@ A ideia é apresentar minha capacidade de criar **interfaces funcionais, organiz
 
 **Importante:**  
 Estou em processo de aprendizado e pretendo continuar atualizando este projeto com melhorias no layout, usabilidade e integração com backend (Node.js e PostgreSQL), conforme avanço nos estudos.
-Se eventualmente alguem quiser testar as credenciais para acesso são **email: teste@teste.com** **senha:123456**.
+Se eventualmente alguem quiser testar as credenciais para acesso são: 
+**email: teste@teste.com** **senha:123456**.
 
 #Tecnologias utilizadas
 
