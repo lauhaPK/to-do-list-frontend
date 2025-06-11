@@ -26,8 +26,7 @@ Se eventualmente alguem quiser testar as credenciais para acesso são:  **email:
 #Contato
 
 Se quiser enviar sugestões ou entrar em contato.
-lauhakamayura@gmail.com
-www.linkedin.com/in/lauhá-kamayurá
+email lauhakamayura@gmail.com e linkedin www.linkedin.com/in/lauhá-kamayurá
 
 
 
