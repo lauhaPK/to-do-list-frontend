@@ -28,6 +28,10 @@ Se eventualmente alguem quiser testar as credenciais para acesso são:  **email:
 Se quiser enviar sugestões ou entrar em contato.
 email lauhakamayura@gmail.com e linkedin www.linkedin.com/in/lauhá-kamayurá
 
+#Atualização
+
+Persistência de tarefas implementada via localStorage como solução temporária, até a integração completa com backend e banco de dados.
+
 
 
 
