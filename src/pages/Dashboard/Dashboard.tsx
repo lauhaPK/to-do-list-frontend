@@ -1,42 +1,39 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import Modal from "react-modal";
-import "./Dashboard.css";
+import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import Modal from "react-modal"
+import "./Dashboard.css"
 
-Modal.setAppElement("#root");
+Modal.setAppElement("#root")
 
-const categoriasFixas = ["Trabalho", "Pessoal", "Outros"];
+const categoriasFixas = ["Trabalho", "Pessoal", "Outros"]
 
 interface Tarefa {
-  id: number;
-  texto: string;
-  categoria: string;
-  concluida: boolean;
+  id: number
+  texto: string
+  categoria: string
+  concluida: boolean
 }
 
-// Interface para o tipo de mensagem
 interface Mensagem {
-  id: number;
-  texto: string;
-  tipo: 'sucesso' | 'info' | 'aviso' | 'erro';
+  id: number
+  texto: string
+  tipo: 'sucesso' | 'info' | 'aviso' | 'erro'
 }
 
-// Novo componente para a mensagem discreta
 const MensagemDiscreta: React.FC<{ mensagem: Mensagem | null; onDismiss: () => void }> = ({ mensagem, onDismiss }) => {
   useEffect(() => {
     if (mensagem) {
       const timer = setTimeout(() => {
-        onDismiss();
-      }, 3000); // Mensagem desaparece após 3 segundos
-      return () => clearTimeout(timer);
+        onDismiss()
+      }, 3000)
+      return () => clearTimeout(timer)
     }
-  }, [mensagem, onDismiss]);
+  }, [mensagem, onDismiss])
 
   if (!mensagem) {
-    return null;
+    return null
   }
 
-  // Estilos inline básicos para a mensagem discreta
   const style: React.CSSProperties = {
     position: 'fixed',
     top: '15px',
@@ -52,42 +49,38 @@ const MensagemDiscreta: React.FC<{ mensagem: Mensagem | null; onDismiss: () => v
     alignItems: 'center',
     justifyContent: 'space-between',
     gap: '10px',
-  };
+  }
 
-  const isExclusaoCategoria = mensagem.texto.toLowerCase().includes('categorias excluídas');
+  const isExclusaoCategoria = mensagem.texto.toLowerCase().includes('categorias excluídas')
 
   if (isExclusaoCategoria) {
-    // Posição personalizada para exclusão de categoria (mais para a direita)
-    style.top = '15px';
-    style.right = '15px'; // Mais próximo da borda direita
+    style.top = '15px'
+    style.right = '15px'
   } else {
-    // Posição padrão para outras mensagens
-    style.top = '15px';
-    style.right = '15px';
+    style.top = '15px'
+    style.right = '15px'
   }
-  
 
-  // Cores de fundo e texto para diferentes tipos de mensagem
   if (mensagem.tipo === 'sucesso') {
-    style.backgroundColor = '#f0f0f0'; // Fundo bem claro
-    style.color = '#444';
-    style.border = '1px solid #e0e0e0';
+    style.backgroundColor = '#f0f0f0'
+    style.color = '#444'
+    style.border = '1px solid #e0e0e0'
   } else if (mensagem.tipo === 'info') {
-    style.backgroundColor = '#d0d0d0'; // Fundo um pouco mais escuro
-    style.color = '#222';
-    style.border = '1px solid #b0b0b0';
+    style.backgroundColor = '#d0d0d0'
+    style.color = '#222'
+    style.border = '1px solid #b0b0b0'
   } else if (mensagem.tipo === 'aviso') {
-    style.backgroundColor = '#e5e5e5'; // Fundo intermediário
-    style.color = '#333';
-    style.border = '1px solid #c5c5c5';
+    style.backgroundColor = '#e5e5e5'
+    style.color = '#333'
+    style.border = '1px solid #c5c5c5'
   } else if (mensagem.tipo === 'erro') {
-    style.backgroundColor = '#b5b5b5';
-    style.color = '#111';
-    style.border = '1px solid #959595';
+    style.backgroundColor = '#b5b5b5'
+    style.color = '#111'
+    style.border = '1px solid #959595'
   } else {
-    style.backgroundColor = '#f5f5f5';
-    style.color = '#333';
-    style.border = '1px solid #ddd';
+    style.backgroundColor = '#f5f5f5'
+    style.color = '#333'
+    style.border = '1px solid #ddd'
   }
 
   return (
@@ -107,62 +100,80 @@ const MensagemDiscreta: React.FC<{ mensagem: Mensagem | null; onDismiss: () => v
         &times;
       </button>
     </div>
-  );
-};
+  )
+}
 
 
 export default function Dashboard() {
-  const navigate = useNavigate();
-  const [tarefas, setTarefas] = useState<Tarefa[]>([]);
-  const [textoTarefa, setTextoTarefa] = useState("");
+  const navigate = useNavigate()
+
+ 
+  const [tarefas, setTarefas] = useState<Tarefa[]>(() => {
+    const tarefasSalvas = localStorage.getItem('tarefas')
+    return tarefasSalvas ? JSON.parse(tarefasSalvas) : []
+  })
+
+
+  const [categoriasPersonalizadas, setCategoriasPersonalizadas] = useState<string[]>(() => {
+    const categoriasSalvas = localStorage.getItem('categoriasPersonalizadas')
+    return categoriasSalvas ? JSON.parse(categoriasSalvas) : []
+  })
+ 
+  const [textoTarefa, setTextoTarefa] = useState("")
   const [categoriaSelecionada, setCategoriaSelecionada] = useState(
     categoriasFixas[0]
-  );
+  )
 
-  const [categoriasPersonalizadas, setCategoriasPersonalizadas] = useState<
-    string[]
-  >([]);
-  const [mostrarInputCategoria, setMostrarInputCategoria] = useState(false);
-  const [novaCategoria, setNovaCategoria] = useState("");
+  const [mostrarInputCategoria, setMostrarInputCategoria] = useState(false)
+  const [novaCategoria, setNovaCategoria] = useState("")
 
   const [mostrarGerenciarCategorias, setMostrarGerenciarCategorias] =
-    useState(false);
+    useState(false)
   const [categoriasSelecionadas, setCategoriasSelecionadas] = useState<
     string[]
-  >([]);
+  >([])
 
-  const [filtroCategoria, setFiltroCategoria] = useState("Todas");
-  const [modalExcluirAberto, setModalExcluirAberto] = useState(false);
+  const [filtroCategoria, setFiltroCategoria] = useState("Todas")
+  const [modalExcluirAberto, setModalExcluirAberto] = useState(false)
 
-  const [tarefasConcluidasSelecionadas, setTarefasConcluidasSelecionadas] = useState<number[]>([]);
+  const [tarefasConcluidasSelecionadas, setTarefasConcluidasSelecionadas] = useState<number[]>([])
 
-  const [mensagemAtual, setMensagemAtual] = useState<Mensagem | null>(null);
+  const [mensagemAtual, setMensagemAtual] = useState<Mensagem | null>(null)
 
   const exibirMensagem = (texto: string, tipo: 'sucesso' | 'info' | 'aviso' | 'erro') => {
-    const novaMensagem: Mensagem = { id: Date.now(), texto, tipo };
-    setMensagemAtual(novaMensagem);
-  };
+    const novaMensagem: Mensagem = { id: Date.now(), texto, tipo }
+    setMensagemAtual(novaMensagem)
+  }
 
   const descartarMensagem = () => {
-    setMensagemAtual(null);
-  };
+    setMensagemAtual(null)
+  }
 
   const handleLogout = () => {
-    // Aqui você pode adicionar lógica de limpeza de sessão se necessário
-    navigate('/login');
-  };
+    navigate("/login")
+  }
+
+  
+  useEffect(() => {
+    localStorage.setItem('tarefas', JSON.stringify(tarefas))
+  }, [tarefas])
+
+  useEffect(() => {
+    localStorage.setItem('categoriasPersonalizadas', JSON.stringify(categoriasPersonalizadas))
+  }, [categoriasPersonalizadas])
+
 
   const adicionarTarefa = () => {
-    if (!textoTarefa.trim()) return;
+    if (!textoTarefa.trim()) return
 
     const isDuplicate = tarefas.some(
       (tarefa) =>
         tarefa.texto.trim().toLowerCase() === textoTarefa.trim().toLowerCase()
-    );
+    )
 
     if (isDuplicate) {
-      exibirMensagem("Esta tarefa já existe!", "aviso");
-      return;
+      exibirMensagem("Esta tarefa já existe!", "aviso")
+      return
     }
 
     const novaTarefa: Tarefa = {
@@ -170,119 +181,116 @@ export default function Dashboard() {
       texto: textoTarefa.trim(),
       categoria: categoriaSelecionada,
       concluida: false,
-    };
-    setTarefas([...tarefas, novaTarefa]);
-    setTextoTarefa("");
-    exibirMensagem("Tarefa adicionada com sucesso!", "sucesso");
-  };
+    }
+    setTarefas([...tarefas, novaTarefa])
+    setTextoTarefa("")
+    exibirMensagem("Tarefa adicionada com sucesso!", "sucesso")
+  }
 
   const adicionarCategoria = () => {
-    if (!novaCategoria.trim()) return;
+    if (!novaCategoria.trim()) return
 
-    const categoriaNormalizada = novaCategoria.trim().toLowerCase();
+    const categoriaNormalizada = novaCategoria.trim().toLowerCase()
     const categoriaExistente =
       categoriasFixas.map(cat => cat.toLowerCase()).includes(categoriaNormalizada) ||
-      categoriasPersonalizadas.map(cat => cat.toLowerCase()).includes(categoriaNormalizada);
+      categoriasPersonalizadas.map(cat => cat.toLowerCase()).includes(categoriaNormalizada)
 
 
     if (categoriaExistente) {
-      exibirMensagem("Esta categoria já existe!", "aviso");
-      return;
+      exibirMensagem("Esta categoria já existe!", "aviso")
+      return
     }
 
-    setCategoriasPersonalizadas([...categoriasPersonalizadas, novaCategoria.trim()]);
-    setNovaCategoria("");
-    exibirMensagem("Categoria adicionada com sucesso!", "sucesso");
-  };
+    setCategoriasPersonalizadas([...categoriasPersonalizadas, novaCategoria.trim()])
+    setNovaCategoria("")
+    exibirMensagem("Categoria adicionada com sucesso!", "sucesso")
+  }
 
   const excluirCategoriasSelecionadas = () => {
     const novasCategorias = categoriasPersonalizadas.filter(
       (cat) => !categoriasSelecionadas.includes(cat)
-    );
-    setCategoriasPersonalizadas(novasCategorias);
+    )
+    setCategoriasPersonalizadas(novasCategorias)
 
     const novasTarefas = tarefas.filter(
       (tarefa) => !categoriasSelecionadas.includes(tarefa.categoria)
-    );
-    setTarefas(novasTarefas);
+    )
+    setTarefas(novasTarefas)
 
-    // Verificar se a categoria atualmente selecionada está sendo excluída
     if (categoriasSelecionadas.includes(categoriaSelecionada)) {
-      // Se sim, redefinir para a primeira categoria fixa disponível
-      setCategoriaSelecionada(categoriasFixas[0]);
+      setCategoriaSelecionada(categoriasFixas[0])
     }
 
-    setCategoriasSelecionadas([]);
-    exibirMensagem("Categorias excluídas com sucesso!", "info");
-  };
+    setCategoriasSelecionadas([])
+    exibirMensagem("Categorias excluídas com sucesso!", "info")
+  }
 
   const alternarSelecaoCategoria = (cat: string) => {
     if (categoriasSelecionadas.includes(cat)) {
-      setCategoriasSelecionadas(categoriasSelecionadas.filter((c) => c !== cat));
+      setCategoriasSelecionadas(categoriasSelecionadas.filter((c) => c !== cat))
     } else {
-      setCategoriasSelecionadas([...categoriasSelecionadas, cat]);
+      setCategoriasSelecionadas([...categoriasSelecionadas, cat])
     }
-  };
+  }
 
-  // Lógica para o botão "Selecionar todas" / "Deselecionar todas" das categorias
   const todasCategoriasEstaoSelecionadas =
     categoriasPersonalizadas.length > 0 &&
-    categoriasSelecionadas.length === categoriasPersonalizadas.length;
+    categoriasSelecionadas.length === categoriasPersonalizadas.length
 
   const toggleSelecionarDeselecionarTodasCategorias = () => {
     if (todasCategoriasEstaoSelecionadas) {
-      setCategoriasSelecionadas([]); // Desseleciona todas
+      setCategoriasSelecionadas([])
     } else {
-      setCategoriasSelecionadas([...categoriasPersonalizadas]); // Seleciona todas
+      setCategoriasSelecionadas([...categoriasPersonalizadas])
     }
-  };
+  }
 
   const toggleConcluida = (id: number) => {
     setTarefas(
       tarefas.map((t) =>
         t.id === id ? { ...t, concluida: !t.concluida } : t
       )
-    );
-    setTarefasConcluidasSelecionadas([]);
-  };
+    )
+    setTarefasConcluidasSelecionadas([])
+  }
 
   const excluirTarefa = (id: number) => {
-    setTarefas(tarefas.filter((t) => t.id !== id));
-    exibirMensagem("Tarefa excluída.", "info");
-  };
+    setTarefas(tarefas.filter((t) => t.id !== id))
+    exibirMensagem("Tarefa excluída.", "info")
+  }
 
   const alternarSelecaoTarefaConcluida = (id: number) => {
     if (tarefasConcluidasSelecionadas.includes(id)) {
-      setTarefasConcluidasSelecionadas(tarefasConcluidasSelecionadas.filter((tId) => tId !== id));
+      setTarefasConcluidasSelecionadas(tarefasConcluidasSelecionadas.filter((tId) => tId !== id))
     } else {
-      setTarefasConcluidasSelecionadas([...tarefasConcluidasSelecionadas, id]);
+      setTarefasConcluidasSelecionadas([...tarefasConcluidasSelecionadas, id])
     }
-  };
+  }
 
   const tarefasFiltradas = tarefas.filter((t) =>
     filtroCategoria === "Todas" ? true : t.categoria === filtroCategoria
-  );
+  )
 
-  const tarefasConcluidasFiltradas = tarefasFiltradas.filter((t) => t.concluida);
+  const tarefasConcluidasFiltradas = tarefasFiltradas.filter((t) => t.concluida)
 
   const todasConcluidasEstaoSelecionadas =
     tarefasConcluidasFiltradas.length > 0 &&
-    tarefasConcluidasSelecionadas.length === tarefasConcluidasFiltradas.length;
+    tarefasConcluidasSelecionadas.length === tarefasConcluidasFiltradas.length
 
   const toggleSelecionarDeselecionarTodas = () => {
     if (todasConcluidasEstaoSelecionadas) {
-      setTarefasConcluidasSelecionadas([]);
+      setTarefasConcluidasSelecionadas([])
     } else {
-      const todosIds = tarefasConcluidasFiltradas.map((t) => t.id);
-      setTarefasConcluidasSelecionadas(todosIds);
+      const todosIds = tarefasConcluidasFiltradas.map((t) => t.id)
+      setTarefasConcluidasSelecionadas(todosIds)
     }
-  };
+  }
 
   const excluirTarefasConcluidasSelecionadas = () => {
-    setTarefas(tarefas.filter((t) => !tarefasConcluidasSelecionadas.includes(t.id)));
-    setTarefasConcluidasSelecionadas([]);
-    exibirMensagem("Tarefas concluídas excluídas!", "info");
-  };
+    setTarefas(tarefas.filter((t) => !tarefasConcluidasSelecionadas.includes(t.id)))
+    setTarefasConcluidasSelecionadas([])
+    exibirMensagem("Tarefas concluídas excluídas!", "info")
+  }
 
 
   return (
@@ -303,7 +311,7 @@ export default function Dashboard() {
           onChange={(e) => setTextoTarefa(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              adicionarTarefa();
+              adicionarTarefa()
             }
           }}
         />
@@ -342,7 +350,7 @@ export default function Dashboard() {
             onChange={(e) => setNovaCategoria(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                adicionarCategoria();
+                adicionarCategoria()
               }
             }}
           />
@@ -369,7 +377,6 @@ export default function Dashboard() {
               </label>
             </div>
           ))}
-          {/* Botões de ação para categorias */}
           <div className="category-management-actions">
             <button
               onClick={toggleSelecionarDeselecionarTodasCategorias}
@@ -401,8 +408,8 @@ export default function Dashboard() {
           <button onClick={() => setModalExcluirAberto(false)}>Cancelar</button>
           <button
             onClick={() => {
-              excluirCategoriasSelecionadas();
-              setModalExcluirAberto(false);
+              excluirCategoriasSelecionadas()
+              setModalExcluirAberto(false)
             }}
           >
             Excluir
@@ -493,16 +500,29 @@ export default function Dashboard() {
                   checked={tarefasConcluidasSelecionadas.includes(t.id)}
                   onChange={() => alternarSelecaoTarefaConcluida(t.id)}
                 />
-                <span style={{ textDecoration: 'none' }}>
-                  {t.texto}{" "}
-                  {filtroCategoria === "Todas" && <strong>({t.categoria})</strong>}
+                <span style={{color: '#888' }}>
+                  {t.texto} {filtroCategoria === "Todas" && <strong>&nbsp;({t.categoria})</strong>}
                 </span>
               </label>
+              <button
+                className="botao-lixeira"
+                onClick={() => excluirTarefa(t.id)}
+                style={{
+                  color: '#666',
+                  fontSize: '16px',
+                  fontWeight: 'bold',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '2px 4px'
+                }}
+              >
+                ×
+              </button>
             </li>
           ))}
         </ul>
       </section>
     </div>
-  );
+  )
 }
-

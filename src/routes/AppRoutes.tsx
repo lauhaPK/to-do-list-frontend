@@ -1,3 +1,4 @@
+
 import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom'
 import Dashboard from '../pages/Dashboard/Dashboard'
 import Register from '../pages/Register/Register'
@@ -14,6 +15,6 @@ const AppRoutes = () => (
       <Route path="/forgot-password" element={<RecoverPassword />} />
     </Routes>
   </BrowserRouter>
-);
+)
 
-export default AppRoutes;
+export default AppRoutes

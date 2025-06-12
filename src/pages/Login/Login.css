@@ -25,7 +25,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #f8f8f8; /* Cor de fundo do body */
+  background-color: #f8f8f8; 
   padding: 20px;
 }
 
@@ -68,9 +68,9 @@ body {
 .form-input {
   padding: 12px;
   border: 1px solid #ddd;
-  border-radius: 5px; /* Ajustado para 5px */
+  border-radius: 5px; 
   font-size: 16px;
-  color: #333; /* Cor do texto do input */
+  color: #333; 
   transition: border-color 0.2s;
 }
 
@@ -94,17 +94,17 @@ body {
 }
 
 .submit-button {
-  background-color: #607d8b; /* Cor de botão do Dashboard */
+  background-color: #607d8b; 
   color: white;
   border: none;
   padding: 12px;
-  border-radius: 5px; /* Ajustado para 5px */
+  border-radius: 5px; 
   font-size: 16px;
-  font-weight: bold; /* Ajustado para bold */
+  font-weight: bold; 
   cursor: pointer;
   transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
   margin-top: 8px;
-  width: 100%; /* Adicionado para ocupar a largura total */
+  width: 100%; 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -112,7 +112,7 @@ body {
 }
 
 .submit-button:hover:not(:disabled) {
-  background-color: #455a64; /* Cor de hover do Dashboard */
+  background-color: #455a64;
   transform: scale(1.03);
 }
 
@@ -121,7 +121,6 @@ body {
   cursor: not-allowed;
 }
 
-/* Container dos links */
 .links-container {
   display: flex;
   flex-direction: column;
@@ -129,7 +128,6 @@ body {
   align-items: center;
 }
 
-/* Item individual de link */
 .link-item {
   display: flex;
   align-items: center;
@@ -137,35 +135,30 @@ body {
   font-size: 14px;
 }
 
-/* Texto da pergunta */
 .link-text {
   color: #666;
 }
 
-/* Link clicável */
 .link-action {
-  color: #607d8b; /* Cor de link do Dashboard */
-  text-decoration: none;
+  color: #607d8b; 
   font-weight: 500;
   transition: all 0.2s ease;
   padding: 2px 4px;
   border-radius: 3px;
 }
 
-/* Efeito hover com scale */
 .link-action:hover {
-  color: #455a64; /* Cor de hover do Dashboard */
+  color: #455a64; 
   transform: scale(1.05);
   background-color: transparent;
 }
 
-/* Efeito de foco para acessibilidade */
 .link-action:focus {
   outline: 2px solid #607d8b;
   outline-offset: 2px;
 }
 
-/* Responsividade para dispositivos móveis */
+
 @media (max-width: 480px) {
   .login-card {
     padding: 24px;
@@ -179,7 +172,7 @@ body {
 }
 
 
-/* Loader2 - Spinner dentro do botão */
+
 .loader2 {
   display: flex;
   align-items: center;
